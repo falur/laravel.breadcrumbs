@@ -1,0 +1,29 @@
+{
+  "name": "falur/laravel-breadcrumbs",
+  "type": "library",
+  "description": "Laravel Breadcrumbs",
+  "keywords": [
+    "laravel",
+    "breadcrumbs"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": ">=5.6.4",
+    "illuminate/support": "5.4.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.*"
+  },
+  "authors": [
+    {
+      "name": "Ildar Enakaev",
+      "email": "ienakaev@ya.ru"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Falur\\Breadcrumbs\\": "src/"
+    }
+  },
+  "minimum-stability": "dev"
+}
