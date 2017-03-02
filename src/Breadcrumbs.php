@@ -69,6 +69,11 @@ class Breadcrumbs implements Contracts\Breadcrumbs
         return $this;
     }
 
+    /**
+     * @param mixed $k
+     * @param mixed $item
+     * @return array
+     */
     protected function getDataFromMixed($k, $item)
     {
         if (!is_array($item)) {
@@ -79,7 +84,7 @@ class Breadcrumbs implements Contracts\Breadcrumbs
             throw new \InvalidArgumentException("{$k} item invalid");
         }
 
-        if (isset($item['name'])) {
+        if (isset($item['name']) && isset($item['url'])) {
             return [
                 $item['name'],
                 $item['url']
@@ -161,6 +166,10 @@ class Breadcrumbs implements Contracts\Breadcrumbs
         return $this;
     }
 
+    /**
+     * @param string|null $template
+     * @return string
+     */
     public function getFullViewPath($template = null)
     {
         if (is_null($template)) {
@@ -173,7 +182,7 @@ class Breadcrumbs implements Contracts\Breadcrumbs
             return $this->viewPath . $template;
         }
 
-        return $this->viewPath . '.' . $template;;
+        return $this->viewPath . '.' . $template;
     }
 
     /**
@@ -182,7 +191,7 @@ class Breadcrumbs implements Contracts\Breadcrumbs
      */
     public function render($template = null)
     {
-        return view($this->getFullViewPath($template), [
+        return \view($this->getFullViewPath($template), [
             'crumbs' => $this->crumbs
         ])->render();
     }

@@ -4,8 +4,9 @@ namespace Falur\Breadcrumbs\Tests;
 
 use Falur\Breadcrumbs\Breadcrumbs;
 use Falur\Breadcrumbs\BreadcrumbsItem;
+use Falur\Breadcrumbs\Providers\ServiceProvider;
 
-class BreadcrumbsTest extends \PHPUnit_Framework_TestCase
+class BreadcrumbsTest extends \Orchestra\Testbench\TestCase
 {
     /**
      * @var Breadcrumbs
@@ -14,7 +15,16 @@ class BreadcrumbsTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        parent::setUp();
+
         $this->breadcrumbs = new Breadcrumbs();
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return [
+            ServiceProvider::class,
+        ];
     }
 
     public function testConstructor()
@@ -131,6 +141,12 @@ class BreadcrumbsTest extends \PHPUnit_Framework_TestCase
 
     public function testRender()
     {
-        // TODO
+        $this->breadcrumbs->addArray([
+            new BreadcrumbsItem('home', '/'),
+            ['name' => 'page1', 'url' => '/url'],
+            ['page2', '/url/url'],
+        ]);
+
+        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/render/default.html', $this->breadcrumbs->render());
     }
 }

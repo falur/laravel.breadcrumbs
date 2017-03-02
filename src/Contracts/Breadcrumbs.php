@@ -65,7 +65,13 @@ interface Breadcrumbs
     public function setTemplate($template);
 
     /**
-     * @param string $template
+     * @param string|null $template
+     * @return mixed
+     */
+    public function getFullViewPath($template = null);
+
+    /**
+     * @param string|null $template
      * @return string
      */
     public function render($template = null);

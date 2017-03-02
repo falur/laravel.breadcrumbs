@@ -21,7 +21,7 @@ class ServiceProvider extends BaseServiceProvider
 
     public function register()
     {
-        $this->app->singleton(BreadcrumbsContract, Breadcrumbs::class);
+        $this->app->singleton(BreadcrumbsContract::class, Breadcrumbs::class);
         $this->app->alias(BreadcrumbsContract::class, 'breadcrumbs');
     }
 }
