@@ -6,10 +6,12 @@
 
 `config/app.php`
 
+К `providers`
 ```php
 Falur\Breadcrumbs\Providers\ServiceProvider::class
 ```
 
+К `aliases`
 ```php
 'Breadcrumbs' => Falur\Breadcrumbs\Facades\Breadcrumbs::class,
 'BreadcrumbsFactory' => Falur\Breadcrumbs\Facades\BreadcrumbsFactory::class,
@@ -40,9 +42,11 @@ class PageController extends BaseController
         $this->breadcrumbs->add('Action', '/action');
     }
 }
+```
 
-// or 
+Или
 
+```php
 // PageController.php
 class PageController extends Controller
 {
@@ -54,7 +58,26 @@ class PageController extends Controller
         ]);
     }
 }
-
-// view.blade.php
-Breadcrumbs::render();
 ```
+
+В отображении
+
+```php
+// view.blade.php
+{!! Breadcrumbs::render() !!}
+```
+
+## Свой шаблон отображения 
+
+Либо 
+`php artisan vendor:publish --provider="Falur\Breadcrumbs\Providers\ServiceProvider"`
+
+После чего в каталоге `vendor` появится шаблон хлебных крошек
+
+Либо
+```php
+Breadcrumbs::setViewPath($path);
+Breadcrumbs::setTemplate($template);
+```
+
+Где `$path` - путь к шаблону `$template` - сам шаблон
