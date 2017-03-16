@@ -4,13 +4,11 @@ namespace Falur\Breadcrumbs\Tests;
 
 use Falur\Breadcrumbs\Breadcrumbs;
 use Falur\Breadcrumbs\BreadcrumbsFactory;
-use Falur\Breadcrumbs\BreadcrumbsItem;
-use Falur\Breadcrumbs\Providers\ServiceProvider;
 
-class BreadcrumbsFactoryTest extends \Orchestra\Testbench\TestCase
+class BreadcrumbsFactoryTest extends TestCase
 {
     /**
-     * BreadcrumbsFactory
+     * @var BreadcrumbsFactory
      */
     protected $breadcrumbsFactory;
 
@@ -21,44 +19,28 @@ class BreadcrumbsFactoryTest extends \Orchestra\Testbench\TestCase
         $this->breadcrumbsFactory = new BreadcrumbsFactory();
     }
 
-    protected function getPackageProviders($app)
+    public function callbackBreadcrumbs(Breadcrumbs $breadcrumbs)
     {
-        return [
-            ServiceProvider::class,
-        ];
+        return $breadcrumbs;
     }
 
     public function testAdd()
     {
-        $this->breadcrumbsFactory->add('test', function(Breadcrumbs $breadcrumbs) {
-            $breadcrumbs->add('testTitle', 'testUrl');
-
-            return $breadcrumbs;
-        });
+        $this->breadcrumbsFactory->add('test', [$this, 'callbackBreadcrumbs']);
 
         $this->assertTrue($this->breadcrumbsFactory->exists('test'));
     }
 
     public function testGet()
     {
-        $this->breadcrumbsFactory->add('test', function(Breadcrumbs $breadcrumbs) {
-            $breadcrumbs->add('testTitle', 'testUrl');
-
-            return $breadcrumbs;
-        });
+        $this->breadcrumbsFactory->add('test', [$this, 'callbackBreadcrumbs']);
 
         $this->assertInstanceOf(Breadcrumbs::class, $this->breadcrumbsFactory->get('test'));
-
-        $this->assertEquals('testTitle', $this->breadcrumbsFactory->get('test')->crumbs()->first()->title);
     }
 
     public function testRemove()
     {
-        $this->breadcrumbsFactory->add('test', function(Breadcrumbs $breadcrumbs) {
-            $breadcrumbs->add('testTitle', 'testUrl');
-
-            return $breadcrumbs;
-        });
+        $this->breadcrumbsFactory->add('test', [$this, 'callbackBreadcrumbs']);
 
         $this->breadcrumbsFactory->remove('test');
 
@@ -69,7 +51,7 @@ class BreadcrumbsFactoryTest extends \Orchestra\Testbench\TestCase
     {
         $this->breadcrumbsFactory->add('test', function (Breadcrumbs $breadcrumbs) {
             return $breadcrumbs->addArray([
-                new BreadcrumbsItem('home', '/'),
+                $this->getBreadcrumbItem(['home', '/']),
                 ['name' => 'page1', 'url' => '/url'],
                 ['page2', '/url/url'],
             ]);
@@ -83,7 +65,7 @@ class BreadcrumbsFactoryTest extends \Orchestra\Testbench\TestCase
 
     public function testRenderException()
     {
-        $this->setExpectedException(\Exception::class);
+        $this->expectException(\Exception::class);
 
         $this->breadcrumbsFactory->render('test');
     }
@@ -92,7 +74,7 @@ class BreadcrumbsFactoryTest extends \Orchestra\Testbench\TestCase
     {
         $this->breadcrumbsFactory->add('test', function (Breadcrumbs $breadcrumbs) {
             return $breadcrumbs->addArray([
-                new BreadcrumbsItem('home', '/'),
+                $this->getBreadcrumbItem(['home', '/']),
                 ['name' => 'page1', 'url' => '/url'],
                 ['page2', '/url/url'],
             ]);

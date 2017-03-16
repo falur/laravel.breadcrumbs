@@ -4,9 +4,8 @@ namespace Falur\Breadcrumbs\Tests;
 
 use Falur\Breadcrumbs\Breadcrumbs;
 use Falur\Breadcrumbs\BreadcrumbsItem;
-use Falur\Breadcrumbs\Providers\ServiceProvider;
 
-class BreadcrumbsTest extends \Orchestra\Testbench\TestCase
+class BreadcrumbsTest extends TestCase
 {
     /**
      * @var Breadcrumbs
@@ -18,13 +17,6 @@ class BreadcrumbsTest extends \Orchestra\Testbench\TestCase
         parent::setUp();
 
         $this->breadcrumbs = new Breadcrumbs();
-    }
-
-    protected function getPackageProviders($app)
-    {
-        return [
-            ServiceProvider::class,
-        ];
     }
 
     public function testConstructor()
@@ -58,7 +50,7 @@ class BreadcrumbsTest extends \Orchestra\Testbench\TestCase
     public function testAddArray()
     {
         $this->breadcrumbs->addArray([
-            new BreadcrumbsItem('name', 'url'),
+            $this->getBreadcrumbItem(),
             ['name' => 'name1', 'url' => 'url1'],
             ['name2', 'url2'],
         ]);
@@ -100,7 +92,7 @@ class BreadcrumbsTest extends \Orchestra\Testbench\TestCase
     public function testClear()
     {
         $this->breadcrumbs->addArray([
-            new BreadcrumbsItem('name', 'url'),
+            $this->getBreadcrumbItem(),
             ['name' => 'name1', 'url' => 'url1'],
             ['name2', 'url2'],
         ]);
@@ -113,7 +105,7 @@ class BreadcrumbsTest extends \Orchestra\Testbench\TestCase
     public function testExists()
     {
         $this->breadcrumbs->addArray([
-            new BreadcrumbsItem('name', 'url'),
+            $this->getBreadcrumbItem(),
             ['name' => 'name1', 'url' => 'url1'],
             ['name2', 'url2'],
         ]);
@@ -142,7 +134,7 @@ class BreadcrumbsTest extends \Orchestra\Testbench\TestCase
     public function testRender()
     {
         $this->breadcrumbs->addArray([
-            new BreadcrumbsItem('home', '/'),
+            $this->getBreadcrumbItem(['home', '/']),
             ['name' => 'page1', 'url' => '/url'],
             ['page2', '/url/url'],
         ]);

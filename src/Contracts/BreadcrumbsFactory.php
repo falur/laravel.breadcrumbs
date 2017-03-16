@@ -9,7 +9,7 @@ interface BreadcrumbsFactory
      * @param callable $callback
      * @return $this
      */
-    public function add($name, callable $callback);
+    public function add($name, $callback);
 
     /**
      * @param string $name

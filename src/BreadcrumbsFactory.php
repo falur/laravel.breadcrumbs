@@ -16,9 +16,13 @@ class BreadcrumbsFactory implements Contracts\BreadcrumbsFactory
      * @param callable $callback
      * @return $this
      */
-    public function add($name, callable $callback)
+    public function add($name, $callback)
     {
-        $this->items[$name] = $callback(new Breadcrumbs());
+        if (!is_callable($callback)) {
+            throw new \InvalidArgumentException();
+        }
+
+        $this->items[$name] = call_user_func_array($callback, [new Breadcrumbs()]);
 
         return $this;
     }
